@@ -1,0 +1,48 @@
+body {
+    width: 600px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+span {
+    flex: 0 0 32%;
+    height: 50px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div {
+    margin: 20px;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+h1 {
+    width: 100%;
+}
+
+.A, .B, .C {
+    background-color: black;
+    color: white;
+}
+
+.D {
+    background-color: blue;
+    color: white;
+}
+
+.E {
+    background-color: green;
+    color: white;
+}
+
+.F {
+    background-color: purple;
+    color: white;
+}
