@@ -229,8 +229,12 @@ darks = [
 let darksIndex = 0;
 for (var x = 0; x < 16; x += 1) {
     for (var y = 0; y < 20; y += 1) {
-        // TODO(agale): count up on the diagonals.
-        const dark = darks[darksIndex++];
+        // TODO(agale): Diagonal color bars
+        // const dark = ...
+        // Vertical color bars
+        // const dark = darks[darksIndex++];
+        // Random colors
+        const dark = darks[Math.floor(Math.random() * darks.length)];
         const light = lights[Math.floor(Math.random() * lights.length)];
 
         // Draw the light colored background
