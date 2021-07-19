@@ -1,6 +1,10 @@
-const svgns = "http://www.w3.org/2000/svg";
+const SVGNS = "http://www.w3.org/2000/svg";
 
-const patterns = {
+const WIDTH = 16;
+const HEIGHT = 20;
+
+// This represents the different pattern sets and number of unique fabrics per set
+const PATTERNS = {
     'peacock': 12,
     'royalnights': 20,
     'sewfine': 20,
@@ -8,48 +12,67 @@ const patterns = {
     'tongatreats': 20,
 };
 
-// Add patterns to the canvas
-for (const [key, value] of Object.entries(patterns)) {
-    for (var i = 1; i <= value; i += 1) {
-        const pattern = document.createElementNS(svgns, 'pattern');
-        pattern.setAttributeNS(null, 'id', key + i);
-        pattern.setAttributeNS(null, 'patternUnits', 'userSpaceOnUse');
-        pattern.setAttributeNS(null, 'width', 50);
-        pattern.setAttributeNS(null, 'height', 50);
+// Draw a square with the provided location, dimensions and fill
+function drawSquare(x, y, w, h, f) {
+    const square = document.createElementNS(SVGNS, 'rect');
+    square.setAttributeNS(null, 'x', x);
+    square.setAttributeNS(null, 'y', y);
+    square.setAttributeNS(null, 'width', w);
+    square.setAttributeNS(null, 'height', h);
+    square.setAttributeNS(null, 'fill', f);
+    document.getElementById('svg').appendChild(square);
+}
 
-        const image = document.createElementNS(svgns, 'image');
-        image.setAttributeNS(null, 'href', 'images/' + key + '/' + i + '.jpg');
-        image.setAttributeNS(null, 'width', 50);
-        image.setAttributeNS(null, 'height', 50);
-        image.setAttributeNS(null, 'x', 0);
-        image.setAttributeNS(null, 'y', 0);
+// Draw a triangle with the provided points and fill
+function drawTriange(p, f) {
+    const triangle = document.createElementNS(SVGNS, 'polygon');
+    const points = p.map(i => i.x + ',' + i.y).join(' ');
+    triangle.setAttributeNS(null, 'points', points);
+    triangle.setAttributeNS(null, 'fill', f);
+    document.getElementById('svg').appendChild(triangle);
+}
 
-        pattern.appendChild(image);
-        document.getElementById('defs').appendChild(pattern);
+// Draw a pattern element for use in the background of a shape
+function drawPattern(folder, i) {
+    const pattern = document.createElementNS(SVGNS, 'pattern');
+    pattern.setAttributeNS(null, 'id', folder + i);
+    pattern.setAttributeNS(null, 'patternUnits', 'userSpaceOnUse');
+    pattern.setAttributeNS(null, 'width', 50);
+    pattern.setAttributeNS(null, 'height', 50);
+
+    const image = document.createElementNS(SVGNS, 'image');
+    image.setAttributeNS(null, 'href', 'images/' + folder + '/' + i + '.jpg');
+    image.setAttributeNS(null, 'width', 50);
+    image.setAttributeNS(null, 'height', 50);
+    image.setAttributeNS(null, 'x', 0);
+    image.setAttributeNS(null, 'y', 0);
+
+    pattern.appendChild(image);
+    document.getElementById('defs').appendChild(pattern);
+}
+
+// Add patterns to the canvas to use as backgrounds
+for (const [pattern, count] of Object.entries(PATTERNS)) {
+    for (var i = 1; i <= count; i++) {
+        drawPattern(pattern, i);
     }
 }
 
 // Generate baskets of colors. For lights, we just have one copy of each color.
 // For the darks we have one entry representing each block.
 let darks = [];
-const lights = [];
-for (const [key, value] of Object.entries(patterns)) {
-    for (var i = 1; i <= value; i += 1) {
+let lights = [];
+for (const [key, value] of Object.entries(PATTERNS)) {
+    for (var i = 1; i <= value; i++) {
         if (key === 'tongaicing') {
             lights.push({ key, i })
         } else {
-            // Push two copies of the color for everything else
-            darks.push({ key, i });
-            darks.push({ key, i });
-            darks.push({ key, i });
-            darks.push({ key, i });
-            if (key === 'peacock') {
-                // Add extra copies since there are only 12 colors to rotate.
+            for (var j = 0; j < Math.floor(WIDTH * HEIGHT / value / 4); j++) {
                 darks.push({ key, i });
+            }
+
+            if (i <= (WIDTH * HEIGHT / 4) - (Math.floor(WIDTH * HEIGHT / value / 4) * value)) {
                 darks.push({ key, i });
-                if (i <= 8) {
-                    darks.push({ key, i });
-                }
             }
         }
     }
@@ -110,24 +133,7 @@ function getRect(x, y) {
     };
 }
 
-function drawSquare(x, y, w, h, f) {
-    const square = document.createElementNS(svgns, 'rect');
-    square.setAttributeNS(null, 'x', x);
-    square.setAttributeNS(null, 'y', y);
-    square.setAttributeNS(null, 'width', w);
-    square.setAttributeNS(null, 'height', h);
-    square.setAttributeNS(null, 'fill', f);
-    document.getElementById('svg').appendChild(square);
-}
-
-function drawTriange(p, f) {
-    const triangle = document.createElementNS(svgns, 'polygon');
-    const points = p.map(i => i.x + ',' + i.y).join(' ');
-    triangle.setAttributeNS(null, 'points', points);
-    triangle.setAttributeNS(null, 'fill', f);
-    document.getElementById('svg').appendChild(triangle);
-}
-
+// Return the average color of the provided image
 function getAvgColor(folder, i) {
     const img = document.createElement('img');
     img.setAttribute('src', 'images/' + folder + '/' + i + '.jpg');
@@ -168,8 +174,18 @@ function getAvgColor(folder, i) {
     return rgb;
 }
 
+// Calculate the distance between two RGB colors
 function calculateDist(c1, c2) {
     return Math.sqrt(Math.pow(c1.r - c2.r, 2) + Math.pow(c1.g - c2.g, 2) + Math.pow(c1.b - c2.b, 2));
+}
+
+// Shuffles an array in place and returns it
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 // Define baseline colors
@@ -182,69 +198,81 @@ const purple = { r: 75, g: 0, b: 130 };
 const colors = [red, orange, yellow, green, blue, purple];
 
 // Sort dark colors into 6 buckets based on closest distance
-const reds = [];
-const oranges = [];
-const yellows = [];
-const greens = [];
-const blues = [];
-const purples = [];
+const buckets = {
+    reds: [],
+    oranges: [],
+    yellows: [],
+    greens: [],
+    blues: [],
+    purples: [],
+};
 
 for (const { key, i } of darks) {
     const color = getAvgColor(key, i);
     const dists = colors.map(c => calculateDist(color, c));
     const smallest = dists.indexOf(Math.min.apply(Math, dists));
-    switch (smallest) {
-        case 0:
-            reds.push({ key, i });
-            break;
-        case 1:
-            oranges.push({ key, i });
-            break;
-        case 2:
-            yellows.push({ key, i });
-            break;
-        case 3:
-            greens.push({ key, i });
-            break;
-        case 4:
-            blues.push({ key, i });
-            break;
-        case 5:
-            purples.push({ key, i });
-            break;
-    }
+    const smallestKey = Object.keys(buckets)[smallest];
+    buckets[smallestKey].push({ key, i });
 }
 
 // Merge colors back together in a randomized way
 darks = [
-    ...reds.sort(() => (Math.random() > .5) ? 1 : -1),
-    ...oranges.sort(() => (Math.random() > .5) ? 1 : -1),
-    ...yellows.sort(() => (Math.random() > .5) ? 1 : -1),
-    ...greens.sort(() => (Math.random() > .5) ? 1 : -1),
-    ...blues.sort(() => (Math.random() > .5) ? 1 : -1),
-    ...purples.sort(() => (Math.random() > .5) ? 1 : -1),
+    ...shuffleArray(buckets.reds),
+    ...shuffleArray(buckets.oranges),
+    ...shuffleArray(buckets.yellows),
+    ...shuffleArray(buckets.greens),
+    ...shuffleArray(buckets.blues),
+    ...shuffleArray(buckets.purples),
 ];
 
-// Add blocks to the canvas
-let darksIndex = 0;
-for (var x = 0; x < 16; x += 1) {
-    for (var y = 0; y < 20; y += 1) {
-        // TODO(agale): Diagonal color bars
-        // const dark = ...
-        // Vertical color bars
-        // const dark = darks[darksIndex++];
-        // Random colors
-        const dark = darks[Math.floor(Math.random() * darks.length)];
-        const light = lights[Math.floor(Math.random() * lights.length)];
+// Iterate through the indices in different orders to get different patterns:
+const ALGORITHM = 'diagonal';
 
-        // Draw the light colored background
-        drawSquare(x * 50, y * 50, 50, 50, 'url(#' + light.key + light.i + ')');
-
-        // Draw the dark colored square and rectangle
-        const pos = getRect(x, y);
-        drawSquare(pos.x, pos.y, 25, 25, 'url(#' + dark.key + dark.i + ')');
-
-        const points = getPoints(x, y);
-        drawTriange(points, 'url(#' + dark.key + dark.i + ')')
+// Vertical color bars
+let ordering = [];
+for (var x = 0; x < WIDTH; x += 1) {
+    for (var y = 0; y < HEIGHT; y += 1) {
+        ordering.push({ x, y });
     }
+}
+
+// Random colors
+if (ALGORITHM === 'random') {
+    shuffleArray(ordering);
+}
+
+// Diagonal color bars
+if (ALGORITHM === 'diagonal') {
+    ordering.sort((a, b) => {
+        const aDist = Math.sqrt(Math.pow(a.x, 2) + Math.pow(a.y, 2));
+        const bDist = Math.sqrt(Math.pow(b.x, 2) + Math.pow(b.y, 2));
+        return aDist > bDist ? 1 : -1;
+    });
+}
+
+// Concentric circles
+if (ALGORITHM === 'circle') {
+    ordering.sort((a, b) => {
+        const aDist = Math.sqrt(Math.pow(a.x - WIDTH / 2, 2) + Math.pow(a.y - HEIGHT / 2, 2));
+        const bDist = Math.sqrt(Math.pow(b.x - WIDTH / 2, 2) + Math.pow(b.y - HEIGHT / 2, 2));
+        return aDist > bDist ? 1 : -1;
+    });
+}
+
+for (var i = 0; i < ordering.length; i++) {
+    const dark = darks[i];
+    const { x, y } = ordering[i];
+
+    // Just randomize the light color squares
+    const light = lights[Math.floor(Math.random() * lights.length)];
+
+    // Draw the light colored background
+    drawSquare(x * 50, y * 50, 50, 50, 'url(#' + light.key + light.i + ')');
+
+    // Draw the dark colored square and rectangle
+    const pos = getRect(x, y);
+    drawSquare(pos.x, pos.y, 25, 25, 'url(#' + dark.key + dark.i + ')');
+
+    const points = getPoints(x, y);
+    drawTriange(points, 'url(#' + dark.key + dark.i + ')')
 }
