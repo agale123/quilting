@@ -1,0 +1,19 @@
+<head>
+	<title>Hungry Caterpillar</title>
+</head>
+<html>
+	<label for="pattern">Choose a pattern:</label>
+	<select name="pattern" id="patterns" onchange="switchPattern(this.value)">
+		<option value="Blocks">Blocks</option>
+		<option value="Xs and Os">Xs and Os</option>
+		<option value="Rhombus">Rhombus</option>
+		<option value="Cake">Cake</option>
+		<option value="Sawtooth">Sawtooth</option>
+	</select>
+	<br>
+	<br>
+	<svg id="svg" xmlns="http://www.w3.org/2000/svg" width="800" height="1000">
+		<defs id="defs"></defs>
+	</svg>
+	<script type="text/javascript" src="index.js"></script>
+</html>
