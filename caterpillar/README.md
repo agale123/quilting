@@ -1,23 +1,23 @@
-# Winding Block
+# Hungry Caterpillar
 
-This pattern is constructed using light and dark blocks in the following pattern:
+Brainstormed different quilt patterns I could implement using Hungry Caterpillar themed fabrics.
 
-<img src="https://github.com/agale123/quilting/blob/4f25a702f5de662d5109ad255fbd9994d9ae78d7/winding_block/base_pattern.png" width="400px">
+## Random Blocks
 
-Different effects can be acheived by distributing the colors in different manners, as shown below.
+<img src="https://github.com/agale123/quilting/blob/b7cc2c21ee075d877c91abe1eb3334227aaf5bbc/caterpillar/blocks.png" width="400px">
 
-## Random colors
+## Xs and Os
 
-<img src="https://github.com/agale123/quilting/blob/4f25a702f5de662d5109ad255fbd9994d9ae78d7/winding_block/random_colors.png" width="400px">
+<img src="https://github.com/agale123/quilting/blob/b7cc2c21ee075d877c91abe1eb3334227aaf5bbc/caterpillar/xsandos.png" width="400px">
 
-## Vertical colors
+## Cake
 
-<img src="https://github.com/agale123/quilting/blob/4f25a702f5de662d5109ad255fbd9994d9ae78d7/winding_block/vertical_colors.png" width="400px">
+<img src="https://github.com/agale123/quilting/blob/b7cc2c21ee075d877c91abe1eb3334227aaf5bbc/caterpillar/cake.png" width="400px">
 
-## Diagonal colors
+## Rhombus
 
-<img src="https://github.com/agale123/quilting/blob/c3f10e6329c28e05fb2e46b09459b76733a37957/winding_block/diagonal_colors.png" width="400px">
+<img src="https://github.com/agale123/quilting/blob/b7cc2c21ee075d877c91abe1eb3334227aaf5bbc/caterpillar/rhombus.png" width="400px">
 
-## Circular colors
+## Sawtooth
 
-<img src="https://github.com/agale123/quilting/blob/4f25a702f5de662d5109ad255fbd9994d9ae78d7/winding_block/circle_colors.png" width="400px">
+<img src="https://github.com/agale123/quilting/blob/b7cc2c21ee075d877c91abe1eb3334227aaf5bbc/caterpillar/sawtooth.png" width="400px">
