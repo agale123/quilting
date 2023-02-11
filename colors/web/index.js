@@ -44,8 +44,10 @@ function hexToRgb(hex) {
 }
 
 let selectedColor;
+let selectedLine;
 
 async function updateMatches(e) {
+    console.log("updateMatches");
     if (e) {
         e.preventDefault();
         const form = document.getElementsByClassName("needs-validation")[0];
@@ -68,7 +70,7 @@ async function updateMatches(e) {
         color = color.slice(1); 
     }
     // If we already are showing this color, return early.
-    if (selectedColor === color) {
+    if (selectedColor === color && selectedLine == fabricLine) {
         return;
     }
     // Rewrite a formatted and uppercase version of the color.
@@ -100,6 +102,7 @@ async function updateMatches(e) {
     }
 
     selectedColor = color;
+    selectedLine = fabricLine;
 }
 
 updateMatches();
