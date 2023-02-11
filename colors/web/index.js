@@ -4,6 +4,7 @@ for (const color of rainbow) {
     const button = document.createElement("button");
     button.classList.add("color-button");
     button.style.backgroundColor = color;
+    button.type = "button";
     button.onclick = () => {
         document.getElementsByTagName("input")[0].value = color;
     };
@@ -42,6 +43,8 @@ function hexToRgb(hex) {
     ] : null;
 }
 
+let selectedColor;
+
 async function updateMatches(e) {
     if (e) {
         e.preventDefault();
@@ -63,6 +66,10 @@ async function updateMatches(e) {
     color = color.toUpperCase();
     if (color.startsWith("#")) {
         color = color.slice(1); 
+    }
+    // If we already are showing this color, return early.
+    if (selectedColor === color) {
+        return;
     }
     // Rewrite a formatted and uppercase version of the color.
     document.getElementsByTagName("input")[0].value = color;
@@ -91,6 +98,8 @@ async function updateMatches(e) {
             <p>${fabric.id}<br>${fabric.name}</p>`;
         results.appendChild(container);
     }
+
+    selectedColor = color;
 }
 
 updateMatches();
