@@ -1,0 +1,39 @@
+head,
+body {
+    background-color: #FAFAFA;
+}
+
+#color-sample {
+    width: 120px;
+    height: 120px;
+    border-radius: 25px;
+}
+
+#color-buttons>button {
+    padding: 0;
+    margin: 4px;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    border-radius: 5px;
+}
+
+img {
+    border-radius: 25px;
+}
+
+@media (max-width: 576px) {
+
+    img,
+    #color-sample {
+        width: 90px;
+        height: 90px;
+    }
+
+    #color-buttons>button {
+        margin: 2px;
+        width: 22px;
+        height: 22px;
+        border-radius: 4px;
+    }
+}

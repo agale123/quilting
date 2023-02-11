@@ -1,9 +1,20 @@
+const rainbow = ["#d12229","#f68a1e","#fde01a","#007940","#24408e","#732982", "#753523", "#040d07"];
+const buttonsContainer = document.getElementById("color-buttons");
+for (const color of rainbow) {
+    const button = document.createElement("button");
+    button.classList.add("color-button");
+    button.style.backgroundColor = color;
+    button.onclick = () => {
+        document.getElementsByTagName("input")[0].value = color;
+    };
+    buttonsContainer.appendChild(button);
+}
 
 const fabricData = {};
 
 function getData(fabricLine) {
     if (!fabricData[fabricLine]) {
-        fabricData[fabricLine] = d3.csv(fabricLine + ".csv")
+        fabricData[fabricLine] = d3.csv("data/" + fabricLine + ".csv")
             .then(data => {
                 return data.map(row => {
                     return {
@@ -22,7 +33,8 @@ function dist(c1, c2) {
 }
 
 function hexToRgb(hex) {
-    var result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.toLowerCase());
+    hex = hex.toLowerCase();
+    const result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     return result ? [
         parseInt(result[1], 16),
         parseInt(result[2], 16),
@@ -31,7 +43,17 @@ function hexToRgb(hex) {
 }
 
 async function updateMatches(e) {
-    e?.preventDefault();
+    if (e) {
+        e.preventDefault();
+        const form = document.getElementsByClassName("needs-validation")[0];
+        const formInput = document.getElementsByClassName("has-validation")[0];
+        if (!form.checkValidity()) {
+            formInput.classList.add("was-validated");
+            return;
+        } else {
+            formInput.classList.remove("was-validated");
+        }
+    }
 
     // Read the fabric line and get data for it.
     const fabricLine = document.getElementsByTagName("select")[0].value;
