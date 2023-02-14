@@ -7,6 +7,7 @@ for (const color of rainbow) {
     button.type = "button";
     button.onclick = () => {
         document.getElementsByTagName("input")[0].value = color;
+        updateMatches();
     };
     buttonsContainer.appendChild(button);
 }
@@ -47,7 +48,6 @@ let selectedColor;
 let selectedLine;
 
 async function updateMatches(e) {
-    console.log("updateMatches");
     if (e) {
         e.preventDefault();
         const form = document.getElementsByClassName("needs-validation")[0];
