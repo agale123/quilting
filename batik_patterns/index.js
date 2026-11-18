@@ -112,23 +112,35 @@ const PLASMA = [
   "#0d0887",
 ];
 
+const RAINBOW = [
+  "#54478c",
+  "#2c699a",
+  "#048ba8",
+  "#0db39e",
+  "#83e377",
+  "#b9e769",
+  "#efea5a",
+  "#f1c453",
+  "#f29e4c",
+];
+
 // Tidepools pattern
 function pinwheel() {
-  const COLS = 5;
-  const ROWS = 7;
-  const W = 100;
+  const COLS = 7;
+  const ROWS = 9;
+  const W = 80;
 
   for (let c = 0; c < COLS; c++) {
     for (let r = 0; r < ROWS; r++) {
       if ((r + c) % 2 == 0) {
-        drawSquare(c * W, r * W, W, W, VIRIDIS[(c + r) / 2]);
+        drawSquare(c * W, r * W, W, W, RAINBOW[(c + r) / 2]);
       } else {
         drawPinwheel(
           r,
           c,
           W,
-          VIRIDIS[Math.floor((c + r) / 2)],
-          VIRIDIS[Math.ceil((c + r) / 2)],
+          RAINBOW[Math.floor((c + r) / 2)],
+          RAINBOW[Math.ceil((c + r) / 2)],
         );
       }
     }
@@ -178,9 +190,9 @@ function lake() {
 
   for (let c = 0; c < COLS; c++) {
     for (let r = 0; r < ROWS; r++) {
-        const c1 = Math.floor(Math.random() * 6);
+      const c1 = Math.floor(Math.random() * 6);
       const c2 = c1 + 6;
-      drawLake(c, r, W,VIRIDIS[3], VIRIDIS[1]);
+      drawLake(c, r, W, VIRIDIS[3], VIRIDIS[1]);
     }
   }
 }
